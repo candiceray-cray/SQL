@@ -1,4 +1,4 @@
-**Schema (PostgreSQL v15)**
+#This project utilized data from the following Netflix dataset using PostgreSQL:
 
     CREATE TABLE netflix_titles_info
         ("show_id" varchar(5), "type" varchar(7), "title" varchar(58), "country" varchar(74), "date_added" timestamp, "release_year" int, "rating" varchar(5), "duration" varchar(9), "listed_in" varchar(74))
@@ -61,7 +61,7 @@
 
 ---
 
-**Query #1**
+#Show the titles of the movies and tv shows and the year they were released
 
     SELECT title, country, release_year
     FROM "netflix_titles_info"
@@ -69,82 +69,24 @@
     INNER JOIN "netflix_people"
     ON netflix_titles_info.show_id = netflix_people.show_id;
 
-| title                                               | country                                                                    | release_year |
-| --------------------------------------------------- | -------------------------------------------------------------------------- | ------------ |
-| Dick Johnson Is Dead                                | United States                                                              | 2020         |
-| Blood & Water                                       | South Africa                                                               | 2021         |
-| Ganglands                                           |                                                                            | 2021         |
-| Jailbirds New Orleans                               |                                                                            | 2021         |
-| Kota Factory                                        | India                                                                      | 2021         |
-| Midnight Mass                                       |                                                                            | 2021         |
-| My Little Pony: A New Generation                    |                                                                            | 2021         |
-| Sankofa                                             | United States | Ghana | Burkina Faso | United Kingdom | Germany | Ethiopia | 1993         |
-| The Great British Baking Show                       | United Kingdom                                                             | 2021         |
-| The Starling                                        | United States                                                              | 2021         |
-| Vendetta: Truth  Lies and The Mafia                 |                                                                            | 2021         |
-| Bangkok Breaking                                    |                                                                            | 2021         |
-| Je Suis Karl                                        | Germany | Czech Republic                                                   | 2021         |
-| Confessions of an Invisible Girl                    |                                                                            | 2021         |
-| Crime Stories: India Detectives                     |                                                                            | 2021         |
-| Dear White People                                   | United States                                                              | 2021         |
-| Europe's Most Dangerous Man: Otto Skorzeny in Spain |                                                                            | 2020         |
-| Falsa identidad                                     | Mexico                                                                     | 2020         |
-| Intrusion                                           |                                                                            | 2021         |
-| Jaguar                                              |                                                                            | 2021         |
-
----
-**Query #2**
+#Identify the total number of movie titles there are in the database
 
     SELECT COUNT(*)
     FROM "netflix_titles_info"
     WHERE type = 'Movie';
 
-| count |
-| ----- |
-| 8     |
-
----
-**Query #3**
+#Show when the most recent batch of tv shows and/or movies added to the database
 
     SELECT MAX(date(date_added))
     FROM "netflix_titles_info";
 
-| max                      |
-| ------------------------ |
-| 2021-09-25T00:00:00.000Z |
-
----
-**Query #4**
+#List all the movies and tv shows in alphabetical order
 
     SELECT title, type, release_year
     FROM "netflix_titles_info"
     ORDER BY title asc;
 
-| title                                               | type    | release_year |
-| --------------------------------------------------- | ------- | ------------ |
-| Bangkok Breaking                                    | TV Show | 2021         |
-| Blood & Water                                       | TV Show | 2021         |
-| Confessions of an Invisible Girl                    | Movie   | 2021         |
-| Crime Stories: India Detectives                     | TV Show | 2021         |
-| Dear White People                                   | TV Show | 2021         |
-| Dick Johnson Is Dead                                | Movie   | 2020         |
-| Europe's Most Dangerous Man: Otto Skorzeny in Spain | Movie   | 2020         |
-| Falsa identidad                                     | TV Show | 2020         |
-| Ganglands                                           | TV Show | 2021         |
-| Intrusion                                           | Movie   | 2021         |
-| Jaguar                                              | TV Show | 2021         |
-| Jailbirds New Orleans                               | TV Show | 2021         |
-| Je Suis Karl                                        | Movie   | 2021         |
-| Kota Factory                                        | TV Show | 2021         |
-| Midnight Mass                                       | TV Show | 2021         |
-| My Little Pony: A New Generation                    | Movie   | 2021         |
-| Sankofa                                             | Movie   | 1993         |
-| The Great British Baking Show                       | TV Show | 2021         |
-| The Starling                                        | Movie   | 2021         |
-| Vendetta: Truth  Lies and The Mafia                 | TV Show | 2021         |
-
----
-**Query #5**
+#Identify the Director from the movie The Starling
 
     SELECT title, type, director
     FROM "netflix_titles_info"
@@ -152,24 +94,14 @@
     ON netflix_titles_info.show_id = netflix_people.show_id
     WHERE title = 'The Starling';
 
-| title        | type  | director       |
-| ------------ | ----- | -------------- |
-| The Starling | Movie | Theodore Melfi |
-
----
-**Query #6**
+#Show the oldest movie in the database and the year it was made
 
     SELECT title, type, release_year
     FROM "netflix_titles_info"
     WHERE type = 'Movie'
     ORDER BY release_year asc limit 1;
 
-| title   | type  | release_year |
-| ------- | ----- | ------------ |
-| Sankofa | Movie | 1993         |
-
----
-**Query #7**
+#Create a select statement that will show all the oldest movies without assuming there was only one that year
 
     SELECT title, type, release_year
     FROM "netflix_titles_info"
@@ -178,9 +110,6 @@
     FROM "netflix_titles_info"
     WHERE type = 'Movie');
 
-| title   | type  | release_year |
-| ------- | ----- | ------------ |
-| Sankofa | Movie | 1993         |
 
 ---
 
