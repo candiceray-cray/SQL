@@ -1,4 +1,6 @@
-#This project utilized data from the following Netflix dataset using PostgreSQL:
+# This project reveals insights about TV and Movie content hosted on Netflix. 
+
+# The project was written using the PostgreSQL dialect and utilized data from the following two Netflix datasets:
 
     CREATE TABLE netflix_titles_info
         ("show_id" varchar(5), "type" varchar(7), "title" varchar(58), "country" varchar(74), "date_added" timestamp, "release_year" int, "rating" varchar(5), "duration" varchar(9), "listed_in" varchar(74))
@@ -59,58 +61,45 @@
         ;
         
 
----
+# The following SQL was written to answer specific questions about the content on Netflix:
 
-#Show the titles of the movies and tv shows and the year they were released
-
+#1. Show the titles of the movies and tv shows and the year they were released
     SELECT title, country, release_year
     FROM "netflix_titles_info"
-    
     INNER JOIN "netflix_people"
     ON netflix_titles_info.show_id = netflix_people.show_id;
 
-#Identify the total number of movie titles there are in the database
-
+#2. Identify the total number of movie titles there are in the database
     SELECT COUNT(*)
     FROM "netflix_titles_info"
     WHERE type = 'Movie';
 
-#Show when the most recent batch of tv shows and/or movies added to the database
-
+#3. Show when the most recent batch of tv shows and/or movies added to the database
     SELECT MAX(date(date_added))
     FROM "netflix_titles_info";
 
-#List all the movies and tv shows in alphabetical order
-
+#4. List all the movies and tv shows in alphabetical order
     SELECT title, type, release_year
     FROM "netflix_titles_info"
     ORDER BY title asc;
 
-#Identify the Director from the movie The Starling
-
+#5. Identify the Director from the movie The Starling
     SELECT title, type, director
     FROM "netflix_titles_info"
     LEFT JOIN "netflix_people"
     ON netflix_titles_info.show_id = netflix_people.show_id
     WHERE title = 'The Starling';
 
-#Show the oldest movie in the database and the year it was made
-
+#6. Show the oldest movie in the database and the year it was made
     SELECT title, type, release_year
     FROM "netflix_titles_info"
     WHERE type = 'Movie'
     ORDER BY release_year asc limit 1;
 
-#Create a select statement that will show all the oldest movies without assuming there was only one that year
-
+#7. Create a select statement that will show all the oldest movies without assuming there was only one that year
     SELECT title, type, release_year
     FROM "netflix_titles_info"
     WHERE type = 'Movie'
     AND release_year <= (SELECT MIN(release_year)
     FROM "netflix_titles_info"
     WHERE type = 'Movie');
-
-
----
-
-[View on DB Fiddle](https://www.db-fiddle.com/f/pfsdrKi9cgCDp4Wwb77AF/0)
